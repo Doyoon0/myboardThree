@@ -10,4 +10,8 @@ import org.springframework.stereotype.Repository;
 public interface BoardRepository extends JpaRepository<Board, Integer> {
 
     Page<Board> findByTitleContaining(String searchKeyword, Pageable pageable);
+
+    // 비밀번호가 없는 게시글 중에서 검색 기능
+    Page<Board> findByTitleContainingAndPasswordIsNull(String searchKeyword, Pageable pageable);
+
 }

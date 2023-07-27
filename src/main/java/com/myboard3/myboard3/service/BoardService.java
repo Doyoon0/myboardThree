@@ -29,7 +29,14 @@ public class BoardService {
     }
 
     public Page<Board> boardSearchList(String searchKeyword, Pageable pageable) {
-        Page<Board> boardPage = boardRepository.findByTitleContaining(searchKeyword, pageable);
+
+        Page<Board> boardPage;
+
+        if (searchKeyword != null && !searchKeyword.isEmpty()) {
+            boardPage = boardRepository.findByTitleContainingAndPasswordIsNull(searchKeyword, pageable);
+        } else {
+            boardPage = boardRepository.findAll(pageable);
+        }
         List<Board> boardList = boardPage.getContent();
         reassignIds(boardList, pageable);
         return new PageImpl<>(boardList, pageable, boardPage.getTotalElements());

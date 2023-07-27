@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -18,20 +19,22 @@ public class CommentController {
     CommentService commentService;
 
     @PostMapping("/board/comment/write")
-    public String insertComment(@RequestParam("boardId") Integer boardId, Comment comment) {
-        comment.setBoardId(boardId); // Comment 객체에 boardId 설정
+    public String insertComment(@RequestParam("boardid") Integer boardid, Comment comment) {
+        comment.setBoardid(boardid); // Comment 객체에 boardId 설정
 
         commentService.write(comment);
-        return "redirect:/board/view?id=" + boardId;
+        return "redirect:/board/view?id=" + boardid;
     }
 
     @GetMapping("/board/comment/list")
-    public String commentList(@RequestParam("boardId") Integer boardId, Model model) {
-        List<Comment> comments = commentService.commentList(boardId);
-        model.addAttribute("commentList", comments); // 댓글 리스트를 모델에 추가
+    @ResponseBody
+    public List<Comment> getCommentList(@RequestParam("boardid") Integer boardid, Model model) {
+        return commentService.commentList(boardid);
+//        List<Comment> comments = commentService.commentList(boardid);
+//        model.addAttribute("commentList", comments); // 댓글 리스트를 모델에 추가
+//
+//        return "board/view"; // 해당 뷰로 이동하여 댓글 리스트를 Ajax로 표시
 
-        System.out.println("댓글 리스트 조회 결과: " + comments);
-
-        return "board/view"; // 리다이렉트 대신 해당 뷰로 바로 이동
     }
 }
+
