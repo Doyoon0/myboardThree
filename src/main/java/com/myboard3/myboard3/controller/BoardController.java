@@ -77,29 +77,6 @@ public class BoardController {
         return "board/boardview";
     }
 
-//    @GetMapping("/board/view")
-//    public String boardView(@RequestParam("id") Integer id, Model model, @RequestParam(required = false) String password) {
-//        Board board = boardService.boardView(id);
-//
-//        boolean passwordVerified = true; // 기본값은 true로 설정합니다.
-//
-//        if (board.getPassword() != null) {
-//            // 비밀번호가 설정되어 있으면 입력된 비밀번호와 일치하는지 확인합니다.
-//            passwordVerified = board.getPassword().equals(password);
-//
-//            if (!passwordVerified) {
-//                // 비밀번호가 일치하지 않는 경우 비밀번호 입력 페이지로 이동합니다.
-//                model.addAttribute("boardId", id);
-//                return "board/boardpassword";
-//            }
-//        }
-//
-//        model.addAttribute("board", board);
-//        model.addAttribute("passwordVerified", passwordVerified);
-//
-//        return "board/boardview";
-//    }
-
     @GetMapping("/board/modify/{id}") // localhost:8080/board/modify/8
     public String boardModify(@PathVariable("id") Integer id, Model model) {
         model.addAttribute("board", boardService.boardView(id));

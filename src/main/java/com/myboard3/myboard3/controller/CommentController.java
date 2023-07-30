@@ -30,11 +30,6 @@ public class CommentController {
     @ResponseBody
     public List<Comment> getCommentList(@RequestParam("boardid") Integer boardid, Model model) {
         return commentService.commentList(boardid);
-//        List<Comment> comments = commentService.commentList(boardid);
-//        model.addAttribute("commentList", comments); // 댓글 리스트를 모델에 추가
-//
-//        return "board/view"; // 해당 뷰로 이동하여 댓글 리스트를 Ajax로 표시
-
     }
 }
 
