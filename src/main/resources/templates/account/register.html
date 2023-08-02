@@ -54,13 +54,12 @@
         }
 
         .form-signin input[type="email"] {
-            margin-bottom: -1px;
             border-bottom-right-radius: 0;
             border-bottom-left-radius: 0;
+            margin-bottom: 10px;
         }
 
         .form-signin input[type="password"] {
-            margin-bottom: 10px;
             border-top-left-radius: 0;
             border-top-right-radius: 0;
         }
@@ -107,6 +106,26 @@
             padding-top: 0.5rem;
             padding-bottom: 0.5rem;
         }
+
+        .form-signin input[type="text"],
+        .form-signin input[type="password"],
+        .form-signin input[type="email"] {
+            border-radius: 0.25rem;
+            /* 입력 필드의 모서리를 둥글게 만듭니다. */
+        }
+
+        .form-floating {
+            margin-bottom: 0.4rem;
+            /* 입력 필드 사이에 간격을 추가합니다. */
+        }
+
+        .form-check {
+            text-align: center;
+        }
+
+        .form-check {
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -132,8 +151,7 @@
                 <label for="password">Password</label>
             </div>
             <div class="form-floating">
-                <input type="email" class="form-control" id="email" name="email" placeholder="Email" required
-                    autofocus>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Email" required autofocus>
                 <label for="email">Email</label>
             </div>
             <!-- <div class="form-check text-start my-3">

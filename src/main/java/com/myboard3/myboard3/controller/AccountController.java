@@ -1,12 +1,17 @@
 package com.myboard3.myboard3.controller;
 
+import com.myboard3.myboard3.config.WebSecurityConfig;
 import com.myboard3.myboard3.entity.User;
 import com.myboard3.myboard3.service.UserService;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.logging.Logger;
 
 @Controller
 @RequestMapping("/account")
