@@ -29,6 +29,19 @@
                 </li>
             </ul>
         </div>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end align-items-center">
+            <a class="btn btn-light me-md-2" th:href="@{/account/login}" sec:authorize="!isAuthenticated()"
+                style="background-color:white;">Login</a>
+            <div style="margin-right:10px;">
+                <form class="d-grid gap-2 d-md-flex justify-content-md-end align-items-center" th:action="@{/logout}"
+                    method="POST" sec:authorize="isAuthenticated()">
+                    <a class="text-white me-2" sec:authentication="name" th:href="@{/board/listuser}">MEMBER</a>
+                    <span class="text-white" sec:authentication="principal.authorities">ROLE</span>
+                    <button class="btn btn-light ms-md-2" type="submit">Logout</button>
+                </form>
+            </div>
+        </div>
+
     </nav>
     <div class="container mt-5">
         <h2>Board</h2>

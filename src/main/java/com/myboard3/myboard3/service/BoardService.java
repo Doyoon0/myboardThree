@@ -42,6 +42,13 @@ public class BoardService {
         return new PageImpl<>(boardList, pageable, boardPage.getTotalElements());
     }
 
+    public Page<Board> boardListByUserName(String username, Pageable pageable) {
+        Page<Board> boardPage = boardRepository.findAllByUsername(username, pageable);
+        List<Board> boardList = boardPage.getContent();
+        reassignIds(boardList, pageable);
+        return new PageImpl<>(boardList, pageable, boardPage.getTotalElements());
+    }
+
     public Board boardView(Integer id) {
         return boardRepository.findById(id).get();
     }

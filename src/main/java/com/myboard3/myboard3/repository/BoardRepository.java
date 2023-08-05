@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Integer> {
 
@@ -14,4 +16,6 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
     // 비밀번호가 없는 게시글 중에서 검색 기능
     Page<Board> findByTitleContainingAndPasswordIsNull(String searchKeyword, Pageable pageable);
 
+    // 아이디로 검색
+    Page<Board> findAllByUsername(String username, Pageable pageable);
 }

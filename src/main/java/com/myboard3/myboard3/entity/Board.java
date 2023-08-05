@@ -14,6 +14,7 @@ public class Board {
     private String title;
     private String content;
     private String password; // 비밀번호 필드 추가
+    private String username;
 
     @Transient
     private Integer virtualId;
