@@ -60,7 +60,7 @@
             </div>
         </div>
         <a type="button" class="btn btn-danger" style="float: left;" th:href="@{/board/delete(id=${board.id})}"
-            sec:authorize="hasAuthority('ADMIN')" onclick="return confirmDelete()">Delete</a>
+            sec:authorize="hasAuthority('ADMIN')" onclick="return attachDeleteButtonHandler()">Delete</a>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="margin-bottom: 10px;">
             <a type="button" class="btn btn-primary" th:href="@{/board/modify/{id}(id=${board.id})}">Edit</a>
             <a type="button" class="btn btn-dark" th:href="@{/board/list}">Cancel</a>
@@ -69,6 +69,16 @@
         <div class="card" style="margin-bottom: 10px;">
             <h7 class="card-header">Leave a Comment :</h7>
             <div class="card-body">
+                <!-- <form name="comment-form" method="post" autocomplete="off">
+                    <div class="form-group" style="margin-bottom: 10px;">
+                        <input type="hidden" name="boardid" th:value="${board.id}" />
+                        <div th:each="comment : ${comments}">
+                            <input type="hidden" name="commentid" th:value="${comment.id}" />
+                        </div>
+                        <textarea class="form-control" name="content" rows="3"></textarea>
+                    </div>
+                </form>
+                <button onclick="commentwrite()" class="btn btn-primary" style="float: right;">Submit</button> -->
                 <form name="comment-form" action="/board/comment/write" method="post" autocomplete="off">
                     <div class="form-group" style="margin-bottom: 10px;">
                         <input type="hidden" name="boardid" th:value="${board.id}" />
@@ -93,6 +103,30 @@
             getCommentList();
         });
 
+        // // 댓글 작성 폼 제출 이벤트 처리
+        // function commentwrite() {
+        //     event.preventDefault();
+        //     var formData = $("#comment-form").serialize;
+
+        //     $.ajax({
+        //         type: "POST",
+        //         url: '/board/comment/write',
+        //         async: true,
+        //         data: formData,
+        //         success: function (result) {
+        //             if (result === "success") {
+        //                 alert('댓글 작성 완료우');
+                        
+        //             } else { alert('error!!!!!!!'); }
+        //         },
+        //         error: function (result) {
+        //             console.log(formData + '으악으악');
+        //             console.log(result + '으악으악으악');
+        //             alert('댓글 작성 실패함');
+        //         }
+        //     })
+        // }
+
         function getCommentList() {
             var boardid = $('input[name=boardid]').val();
             $.ajax({
@@ -102,9 +136,9 @@
                 success: function (result) {
                     console.log(result);
                     for (var i = 0; i < result.length; i++) {
-                        var str = "<li class=\"list-group-item\">"
+                        var str = "<li class=\"list-group-item\" data-commentid=\"" + result[i].id + "\" >"; // 댓글의 commentId를 data 속성으로 추가
                         str += result[i].content
-                            + "<span class=\"delete-btn\""
+                            + "<span class=\"delete-btn\" "
                             + ">&#x274C;</span></li>"
                         $("#comment").append(str);
                     }
@@ -117,18 +151,10 @@
             })
         };
 
-        function confirmDelete() {
-            if (confirm('정말로 삭제하시겠습니까?')) {
-                alert('삭제되었습니다!');
-                return true;
-            } else {
-                return false;
-            }
-        }
-
         function attachDeleteButtonHandler() {
             $(".delete-btn").on('click', function () {
-                var commentId = $('input[name=commentid]').val();
+                var commentId = $(this).closest('li').data('commentid'); // 댓글의 commentId를 가져옴
+                //console.log(commentId);
                 if (confirm('정말로 댓글을 삭제하시겠습니까?')) {
                     deleteComment(commentId);
                 }
@@ -141,11 +167,16 @@
                 url: '/board/comment/delete/' + commentId,
                 success: function (result) {
                     // 삭제 성공 처리
-                    alert('댓글이 삭제되었습니다!');
-                    // 댓글 목록 새로고침 또는 해당 댓글을 제거하는 등의 작업 수행
+                    if (result === "success") {
+                        alert('댓글이 삭제되었습니다!');
+                        $("#comment li[data-commentid='" + commentId + "']").remove();
+                    } else {
+                        alert('헐 댓글 삭제 실패쓰');
+                    }
                 },
                 error: function (result) {
                     // 삭제 실패 처리
+                    alert('삐빅 처리실패, 서버오류');
                 },
                 complete: function () {
                 }

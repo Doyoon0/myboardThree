@@ -19,4 +19,6 @@ public class CommentService {
         return commentRepository.findByBoardid(boardid);
     }
 
+    public void commentDelete(Integer id) { commentRepository.deleteById(id); }
+
 }

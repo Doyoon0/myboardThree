@@ -32,6 +32,8 @@
         <div class="d-grid gap-2 d-md-flex justify-content-md-end align-items-center">
             <a class="btn btn-light me-md-2" th:href="@{/account/login}" sec:authorize="!isAuthenticated()"
                 style="background-color:white;">Login</a>
+            <a class="btn btn-light me-md-2" th:href="@{/account/register}" sec:authorize="!isAuthenticated()"
+               style="background-color:white;">Signup</a>
             <div style="margin-right:10px;">
                 <form class="d-grid gap-2 d-md-flex justify-content-md-end align-items-center" th:action="@{/logout}"
                     method="POST" sec:authorize="isAuthenticated()">

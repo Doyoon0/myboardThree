@@ -5,10 +5,7 @@ import com.myboard3.myboard3.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,7 +26,15 @@ public class CommentController {
     @GetMapping("/board/comment/list")
     @ResponseBody
     public List<Comment> getCommentList(@RequestParam("boardid") Integer boardid, Model model) {
+
         return commentService.commentList(boardid);
+    }
+
+    @GetMapping("/board/comment/delete/{id}")
+    @ResponseBody // ajax 처리
+    public String deleteComment(@PathVariable("id") Integer id) {
+        commentService.commentDelete(id);
+        return "success";
     }
 }
 

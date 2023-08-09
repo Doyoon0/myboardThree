@@ -126,6 +126,11 @@
         .form-check {
             text-align: center;
         }
+
+        .alert-div {
+            margin-bottom: 0.4rem;
+        }
+
     </style>
 </head>
 
@@ -133,14 +138,26 @@
     <main class="form-signin w-100 m-auto">
         <form th:action="@{/account/register}" method="post">
             <h1 class="h3 mb-3 fw-normal">Create Account !</h1>
-            <div th:if="${param.error}" class="alert alert-primary" role="alert">
-                Invalid username and password.
+            <div th:if="${valid_username}" class="alert alert-primary alert-div" role="alert">
+                <span th:if="${valid_username}" th:text="${valid_username}"></span><br th:if="${valid_username}" />
             </div>
-            <div th:if="${param.logout}" class="alert alert-primary" role="alert">
+            <div th:if="${isUsernameDuplicate}" class="alert alert-danger alert-div" role="alert">
+                아이디가 이미 사용 중입니다.
+            </div>
+            <div th:if="${valid_password}" class="alert alert-primary alert-div" role="alert">
+                <span th:if="${valid_password}" th:text="${valid_password}"></span><br th:if="${valid_password}" />
+            </div>
+            <div th:if="${valid_email}" class="alert alert-primary alert-div" role="alert">
+                <span th:if="${valid_email}" th:text="${valid_email}"></span>
+            </div>
+            <div th:if="${isEmailDuplicate}" class="alert alert-danger alert-div" role="alert">
+                이메일이 이미 사용 중입니다.
+            </div>
+            <div th:if="${param.logout}" class="alert alert-primary alert-div" role="alert">
                 You have been logged out.
             </div>
 
-            <div class="form-floating">
+            <div class="form-floating" style="margin-top: 10px;">
                 <input type="text" class="form-control" id="username" name="username" placeholder="Username" required
                     autofocus>
                 <label for="username">Username</label>
@@ -167,6 +184,20 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
+    <script>
+        function removeSpaces(elementId) {
+            const inputField = document.getElementById(elementId);
+
+            inputField.addEventListener("input", function (event) {
+                event.target.value = event.target.value.replace(/\s/g, "");
+            });
+        }
+
+        // 각 필드에 함수를 적용
+        removeSpaces("password");
+        removeSpaces("username");
+        removeSpaces("email");
+    </script>
 </body>
 
 </html>

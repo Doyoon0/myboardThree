@@ -1,0 +1,102 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark" th:fragment="menu(menu)">
+        <a class="navbar-brand" href="#" style="padding-left:10px;">Spring Boot Board</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item" th:classappend="${menu} == 'home'? 'active'">
+                    <a class="nav-link" href="#" th:href="@{/}">Home <span class="sr-only"
+                            th:if="${menu} == 'home'">(current)</span></a>
+                </li>
+                <li class="nav-item" th:classappend="${menu} == 'board'? 'active'">
+                    <a class="nav-link" href="#" th:href="@{/board/list}">Board <span class="sr-only"
+                            th:if="${menu} == 'board'">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end align-items-center">
+            <a class="btn btn-light me-md-2" th:href="@{/account/login}" sec:authorize="!isAuthenticated()"
+                style="background-color:white;">Login</a>
+            <div style="margin-right:10px;">
+                <form class="d-grid gap-2 d-md-flex justify-content-md-end align-items-center" th:action="@{/logout}"
+                    method="POST" sec:authorize="isAuthenticated()">
+                    <a class="text-white me-2" sec:authentication="name" th:href="@{/board/listuser}">MEMBER</a>
+                    <span class="text-white" sec:authentication="principal.authorities">ROLE</span>
+                    <button class="btn btn-light ms-md-2" type="submit">Logout</button>
+                </form>
+            </div>
+        </div>
+
+    </nav>
+    <div class="container mt-5">
+        <h2>Board</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="col-1">Id</th>
+                    <th class="col-7">Title</th>
+                    <th class="col-2">UserName</th>
+                    <th class="col-2">Regdate</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                <tr th:each="board : ${list}">
+                    <td th:text="${board.virtualId}">Id</td>
+                    <td>
+                        <a class="link-underline-light" th:text="${board.title}"
+                            th:href="@{/board/view(id=${board.id})}" th:if="${board.password == null}"></a>
+                        <a class="link-underline-light" th:if="${board.password != null}"
+                            th:href="@{/board/password(id=${board.id})}">
+                            비밀 글 입니다
+                        </a>
+                        <!--                <a class="link-underline-light" th:if="${board.password == null}" th:href="@{/board/view?id=${board.id}}" th:text="${board.title}"></a>-->
+                    </td>
+                    <td th:text="${board.username}">Username</td>
+                    <td>RegDate</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a type="button" class="btn btn-primary" th:href="@{/board/write}">New</a>
+        </div>
+        <nav aria-label="pagination">
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${nowPage == 1} ? 'disabled'">
+                    <a class="page-link"
+                        th:href="@{/board/list(page= ${nowPage - 2}, searchKeyword = ${param.searchKeyword})}">Previous</a>
+                </li>
+                <li class="page-item" th:each="page : ${#numbers.sequence(startPage, endPage)}"
+                    th:classappend="${page == nowPage} ? 'active'">
+                    <a class="page-link"
+                        th:href="@{/board/list(page = ${page - 1}, searchKeyword = ${param.searchKeyword})}"
+                        th:text="${page}"></a>
+                </li>
+                <li class="page-item" th:classappend="${nowPage == endPage} ? 'disabled'">
+                    <a class="page-link"
+                        th:href="@{/board/list(page = ${nowPage}, searchKeyword = ${param.searchKeyword})}">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
